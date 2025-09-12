@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhonePe Transaction</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f2f2f2; margin: 0; padding: 20px; }
+    .receipt { max-width: 420px; margin: auto; background: #fff; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); overflow: hidden; border: 1px solid #ddd; }
+    .header { background: linear-gradient(135deg, #4a148c, #6a1b9a); color: #fff; padding: 20px; text-align: center; }
+    .header h2 { margin: 0; font-size: 22px; }
+    .success-icon { font-size: 60px; color: #4caf50; margin-top: 10px; }
+    .details { padding: 20px; }
+    .details p { margin: 8px 0; font-size: 15px; color: #333; }
+    .details span { float: right; font-weight: bold; color: #4a148c; }
+    .highlight { font-size: 18px; color: #2e7d32; font-weight: bold; text-align: center; margin: 15px 0; }
+    .txn { font-size: 13px; color: #555; margin-top: 10px; }
+    .footer { background: #fafafa; padding: 15px; text-align: center; font-size: 13px; color: #777; border-top: 1px solid #eee; }
+    .fail { color: red; font-size: 30px; padding: 30px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="receipt" id="output"></div>
+
+<script>
+  // 🔹 Sample "Database Simulation"
+  const phonepeDB = {
+    "9876543210": {
+      bank: "State Bank of India",
+      name: "Amit Sharma",
+      amount: "5,000",
+      date: "11-Sep-2025 10:15 AM",
+      charges: "0",
+      sender: "Rajesh Kumar"
+    },
+    "9876543210": {
+      bank: "State Bank of India",
+      name: "Amit Sharma",
+      amount: "5,000",
+      date: "11-Sep-2025 10:15 AM",
+      charges: "0",
+      sender: "Rajesh Kumar"
+    },
+    "9876543210": {
+      bank: "State Bank of India",
+      name: "Amit Sharma",
+      amount: "5,000",
+      date: "11-Sep-2025 10:15 AM",
+      charges: "0",
+      sender: "Rajesh Kumar"
+    },
+    "9876543210": {
+      bank: "State Bank of India",
+      name: "Amit Sharma",
+      amount: "5,000",
+      date: "11-Sep-2025 10:15 AM",
+      charges: "0",
+      sender: "Rajesh Kumar"
+    },
+    "9123456780": {
+      bank: "HDFC Bank",
+      name: "Neha Verma",
+      amount: "12,500",
+      date: "10-Sep-2025 03:40 PM",
+      charges: "10",
+      sender: "Sunil Mehta"
+    }
+  };
+
+  function getParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // Generate random Txn ID
+  function generateTxnID() {
+    return "T" + Date.now() + Math.floor(Math.random() * 1000);
+  }
+
+  let phoneNumber = getParam("phoneNumber");
+  let record = phonepeDB[phoneNumber];
+  let output = document.getElementById("output");
+
+  if (record) {
+    let txnId = generateTxnID();
+    let upiId = phoneNumber + "@ybl"; // Example UPI format
+
+    output.innerHTML = `
+      <div class="header">
+        <div class="success-icon">✔</div>
+        <h2>Payment Successful</h2>
+      </div>
+      <div class="details">
+        <div class="highlight">₹${record.amount} Sent Successfully</div>
+        <p>Bank Name: <span>${record.bank}</span></p>
+        <p>PhonePe Number: <span>${phoneNumber}</span></p>
+        <p>UPI ID: <span>${upiId}</span></p>
+        <p>Account Holder: <span>${record.name}</span></p>
+        <p>Date & Time: <span>${record.date}</span></p>
+        <p>Bank Charges: <span>₹${record.charges}</span></p>
+        <p>Sender: <span>${record.sender}</span></p>
+        <p class="txn">Txn ID: <b>${txnId}</b></p>
+      </div>
+      <div class="footer">
+        <h2 style="color: red;">[Note:-] Amount Send From Bank Of America That's Why Bank Online Charges Are Applied</h2>
+      </div>
+    `;
+  } else {
+    output.innerHTML = `
+      <div class="fail">
+        ❌ No Record Found<br><br>
+        The entered PhonePe number <b>${phoneNumber}</b> does not exist in system.
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>
